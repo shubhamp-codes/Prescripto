@@ -1,0 +1,18 @@
+<svg width="180" height="50" viewBox="0 0 180 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="icon">
+    <rect x="0" y="5" width="40" height="40" rx="12" fill="#2563EB"/>
+    <circle cx="20" cy="25" r="14" fill="#3B82F6" fill-opacity="0.5"/>
+    <path d="M20 14V36M9 25H31" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <text x="50" y="33" 
+        font-family="Arial, Helvetica, sans-serif" 
+        font-size="24" 
+        font-weight="bold" 
+        fill="#1F2937" 
+        letter-spacing="-0.5">
+    Prescripto
+  </text>
+  
+  <circle cx="172" cy="33" r="3" fill="#2563EB"/>
+</svg>
