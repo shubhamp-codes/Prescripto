@@ -1,5 +1,9 @@
+import BookAppointmentCard from "@/components/BookAppointmentCard";
 export default function Home() {
   return (
-    <div>Starting the project</div>
+    <div className="flex justify-center pt-8">
+      <BookAppointmentCard/>
+
+    </div>
   );
 }

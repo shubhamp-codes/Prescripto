@@ -1,10 +1,5 @@
-
 const signup = () => {
-  return (
-    <div>
-      signup
-    </div>
-  )
-}
+  return <div>signup</div>;
+};
 
-export default signup
+export default signup;

@@ -3,7 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import logoSrc from "@/components/icons/logo.svg";
+import logoSrc from "@/assets/icons/logo.svg";
 import {
   Menu,
   X,
@@ -102,7 +102,6 @@ const Navbar = () => {
         }`}
       >
         <div className="flex items-center p-5.5 justify-end border-b">
-          
           <button
             onClick={() => setIsMenuOpen(false)}
             className="text-gray-500 hover:text-red-500 transition-colors"
@@ -113,8 +112,12 @@ const Navbar = () => {
 
         <div className="flex flex-col p-6 gap-6 overflow-y-auto h-[calc(100vh-80px)]">
           <div className="flex flex-col gap-4">
-            <Link href="/signup" onClick={() => setIsMenuOpen(false)} className="w-full bg-blue-600 text-white py-3 rounded-full font-medium shadow-sm hover:bg-blue-700 transition-colors text-center">
-                Create account
+            <Link
+              href="/signup"
+              onClick={() => setIsMenuOpen(false)}
+              className="w-full bg-blue-600 text-white py-3 rounded-full font-medium shadow-sm hover:bg-blue-700 transition-colors text-center"
+            >
+              Create account
             </Link>
             <Link
               href="/login"
