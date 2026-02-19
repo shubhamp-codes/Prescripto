@@ -9,20 +9,17 @@ const FindBySpecialityCard = () => {
         <div className="flex gap-4 m-auto">
           {specialities.map((speciality) => {
             return (
-                <Link href={`/`}>
-              <div
-                key={speciality}
-                className="h-28 w-28 min-w-28 flex flex-col items-center"
-                >
-                <Image
-                  src={`/images-specialities/${speciality}.svg`}
-                  width={80}
-                  height={80}
-                  alt={speciality}
+              <Link href={`/`} key={speciality}>
+                <div className="h-28 w-28 min-w-28 flex flex-col items-center">
+                  <Image
+                    src={`/images-specialities/${speciality}.svg`}
+                    width={80}
+                    height={80}
+                    alt={speciality}
                   />
-                <h3 className=" text-sm">{speciality}</h3>
-              </div>
-                  </Link>
+                  <h3 className=" text-sm">{speciality}</h3>
+                </div>
+              </Link>
             );
           })}
         </div>
