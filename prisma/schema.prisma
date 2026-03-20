@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User{
+  user_id String @id @default(uuid())
+  user_type UserType
+  email String @unique
+  password String?
+  name String
+  phone String?
+  created_on DateTime @default(now())
+  last_updated_on DateTime @updatedAt
+
+  doctor Doctor?
+  patient Patient?
+}
+enum UserType{
+  doctor
+  patient
+}
+model Doctor{
+  doctor_id String @id
+  speciality_id String
+  qualification String?
+  fee Int
+  state String
+  city String
+  address String
+  created_on DateTime @default(now())
+  last_updated_on DateTime @updatedAt
+
+  user User @relation(fields: [doctor_id], references: [user_id])
+  speciality Speciality @relation(fields: [speciality_id], references: [speciality_id])
+  appointments Appointment[]
+  unavailability DoctorUnavailability[]
+}
+model Speciality{
+  speciality_id String @id @default(uuid())
+  name String
+  doctor Doctor[]
+}
+model Patient {
+  patient_id String @id
+  dob DateTime @db.Date
+  created_on DateTime @default(now())
+  last_updated_on DateTime @updatedAt
+
+  user User @relation(fields: [patient_id], references: [user_id])
+  appointments Appointment[]
+}
+model Appointment{
+  appointment_id String @id @default(uuid())
+  doctor_id String
+  patient_id String
+  time_slot DateTime
+  status Status
+  created_on DateTime @default(now())
+  last_updated_on DateTime @updatedAt
+
+  doctor Doctor @relation(fields: [doctor_id], references: [doctor_id])
+  patient Patient @relation(fields: [patient_id], references: [patient_id])
+}
+enum Status{
+  pending
+  confirmed
+}
+model DoctorUnavailability{
+  unavailability_id String @id @default(uuid())
+  doctor_id String
+  start_time DateTime
+  end_time DateTime
+  created_on DateTime @default(now())
+  last_updated_on DateTime @updatedAt
+
+  doctor Doctor @relation(fields: [doctor_id], references: [doctor_id])
+}
