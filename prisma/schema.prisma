@@ -12,76 +12,148 @@ datasource db {
   provider = "postgresql"
 }
 
-model User{
-  user_id String @id @default(uuid())
-  user_type UserType
-  email String @unique
-  password String?
-  name String
-  phone String?
-  created_on DateTime @default(now())
-  last_updated_on DateTime @updatedAt
+model User {
+  id            String    @id @default(uuid())
+  userType      UserType  @default(patient) @map("user_type")
+  email         String    @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  password      String?
+  name          String
+  phone         String?
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
 
-  doctor Doctor?
-  patient Patient?
+  doctor        Doctor?
+  patient       Patient?
+  accounts      Account[]
+  sessions      Session[]
+
+  @@map("users")
 }
-enum UserType{
+
+enum UserType {
   doctor
   patient
+
+  @@map("user_types")
 }
-model Doctor{
-  doctor_id String @id
-  speciality_id String
+
+model Account {
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Doctor {
+  doctorId      String   @id @map("doctor_id")
+  specialityId  String   @map("speciality_id")
   qualification String?
-  fee Int
-  state String
-  city String
-  address String
-  created_on DateTime @default(now())
-  last_updated_on DateTime @updatedAt
+  fee           Int
+  state         String
+  city          String
+  address       String
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
 
-  user User @relation(fields: [doctor_id], references: [user_id])
-  speciality Speciality @relation(fields: [speciality_id], references: [speciality_id])
-  appointments Appointment[]
+  user           User                   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  speciality     Speciality             @relation(fields: [specialityId], references: [specialityId])
+  appointments   Appointment[]
   unavailability DoctorUnavailability[]
+
+  @@map("doctors")
 }
-model Speciality{
-  speciality_id String @id @default(uuid())
-  name String
-  doctor Doctor[]
+
+model Speciality {
+  specialityId String   @id @default(uuid()) @map("speciality_id")
+  name         String
+  
+  doctor       Doctor[]
+
+  @@map("specialities")
 }
+
 model Patient {
-  patient_id String @id
-  dob DateTime @db.Date
-  created_on DateTime @default(now())
-  last_updated_on DateTime @updatedAt
+  patientId String   @id @map("patient_id")
+  dob       DateTime @db.Date
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  user User @relation(fields: [patient_id], references: [user_id])
+  user         User          @relation(fields: [patientId], references: [id], onDelete: Cascade)
   appointments Appointment[]
-}
-model Appointment{
-  appointment_id String @id @default(uuid())
-  doctor_id String
-  patient_id String
-  time_slot DateTime
-  status Status
-  created_on DateTime @default(now())
-  last_updated_on DateTime @updatedAt
 
-  doctor Doctor @relation(fields: [doctor_id], references: [doctor_id])
-  patient Patient @relation(fields: [patient_id], references: [patient_id])
+  @@map("patients")
 }
-enum Status{
+
+model Appointment {
+  appointmentId String   @id @default(uuid()) @map("appointment_id")
+  doctorId      String   @map("doctor_id")
+  patientId     String   @map("patient_id")
+  timeSlot      DateTime @map("time_slot")
+  status        Status   @default(pending)
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  doctor  Doctor  @relation(fields: [doctorId], references: [doctorId])
+  patient Patient @relation(fields: [patientId], references: [patientId])
+
+  @@map("appointments")
+}
+
+enum Status {
   pending
   confirmed
-}
-model DoctorUnavailability{
-  unavailability_id String @id @default(uuid())
-  doctor_id String
-  start_time DateTime
-  end_time DateTime
-  created_on DateTime @default(now())
-  last_updated_on DateTime @updatedAt
 
-  doctor Doctor @relation(fields: [doctor_id], references: [doctor_id])
+  @@map("appointment_statuses")
+}
+
+model DoctorUnavailability {
+  unavailabilityId String   @id @default(uuid()) @map("unavailability_id")
+  doctorId         String   @map("doctor_id")
+  startTime        DateTime @map("start_time")
+  endTime          DateTime @map("end_time")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  doctor Doctor @relation(fields: [doctorId], references: [doctorId], onDelete: Cascade)
+
+  @@map("doctor_unavailabilities")
 }

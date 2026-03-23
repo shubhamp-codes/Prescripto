@@ -34,11 +34,10 @@ export const authOptions = {
           return null;
         }
         return {
-          id: user.user_id,
-          user_id: user.user_id,
+          id: user.id,
           email: user.email,
           name: user.name,
-          user_type: user.user_type,
+          userType: user.userType,
         };
       },
     }),
@@ -46,15 +45,15 @@ export const authOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.user_id = user.user_id;
-        token.user_type = user.user_type;
+        token.id = user.id;
+        token.userType = user.userType;
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
-        session.user.user_id = token.user_id;
-        session.user.user_type = token.user_type;
+        session.user.id = token.id;
+        session.user.userType = token.userType;
       }
       return session;
     },
