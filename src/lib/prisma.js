@@ -10,7 +10,9 @@ const prismaClientSingleton = () => {
   const adapter = new PrismaPg(pool);
 
   // 3. Pass the adapter directly into your custom client
-  return new PrismaClient({ adapter });
+  return new PrismaClient({ 
+    adapter,
+  });
 };
 
 const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
