@@ -104,7 +104,7 @@ model Doctor {
 
 model Speciality {
   specialityId String   @id @default(uuid()) @map("speciality_id")
-  name         String
+  name         String @unique
   
   doctor       Doctor[]
 
