@@ -27,14 +27,14 @@ export const authOptions = {
           where: { email: credentials.email },
         });
         if (!user || !user.password) {
-          return null;
+          throw new Error("Invalid email or password.");;
         }
         const isValidPassword = await bcrypt.compare(
           credentials.password,
           user.password,
         );
         if (!isValidPassword) {
-          return null;
+          throw new Error("Invalid email or password.");;
         }
         return {
           id: user.id,

@@ -1,4 +1,4 @@
-const doctorAuth = () => {
+const DoctorAuth = () => {
   return (
     <div>
       doctorAuth
@@ -6,4 +6,4 @@ const doctorAuth = () => {
   )
 }
 
-export default doctorAuth
+export default DoctorAuth

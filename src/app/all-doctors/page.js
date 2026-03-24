@@ -1,5 +1,5 @@
 
-const allDoctors = () => {
+const AllDoctors = () => {
   return (
     <div>
       allDoctors
@@ -7,4 +7,4 @@ const allDoctors = () => {
   )
 }
 
-export default allDoctors
+export default AllDoctors

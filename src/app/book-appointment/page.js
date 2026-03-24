@@ -1,4 +1,4 @@
-const bookAppointment = () => {
+const BookAppointment = () => {
   return (
     <div>
       Book Appointment
@@ -6,4 +6,4 @@ const bookAppointment = () => {
   )
 }
 
-export default bookAppointment
+export default BookAppointment
