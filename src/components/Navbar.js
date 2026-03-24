@@ -65,6 +65,12 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           <div className="hidden lg:flex items-center gap-4">
             <Link
+              href="/doctor-auth"
+              className="text-sm font-medium text-gray-500 underline hover:text-blue-600 transition-colors mr-2"
+            >
+              Are you a doctor?
+            </Link>
+            <Link
               href="/login"
               className="font-medium text-gray-600 hover:text-blue-600 transition-colors"
             >
