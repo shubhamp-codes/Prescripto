@@ -97,7 +97,7 @@ const Login = () => {
           <div className="flex-1 h-px bg-gray-200"></div>
         </div>
 
-        <GoogleSignInButton />
+        <GoogleSignInButton callbackUrl={"/dashboard/patient"} />
 
         <p className="mt-8 text-center text-sm text-gray-600">
           Don't have an account?{" "}

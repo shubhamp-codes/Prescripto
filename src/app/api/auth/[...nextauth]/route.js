@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import GoogleProvider from "next-auth/providers/google";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 export const authOptions = {
   session: {
     strategy: "jwt",
@@ -27,14 +27,14 @@ export const authOptions = {
           where: { email: credentials.email },
         });
         if (!user || !user.password) {
-          throw new Error("Invalid email or password.");;
+          throw new Error("Invalid email or password.");
         }
         const isValidPassword = await bcrypt.compare(
           credentials.password,
           user.password,
         );
         if (!isValidPassword) {
-          throw new Error("Invalid email or password.");;
+          throw new Error("Invalid email or password.");
         }
         return {
           id: user.id,
@@ -47,13 +47,23 @@ export const authOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
-        token.userType = user.userType;
+        const dbUser = await prisma.user.findUnique({
+          where: { email: user.email },
+        });
+
+        if (dbUser) {
+          token.id = dbUser.id;
+          token.userType = dbUser.userType;
+        } else {
+          token.id = user.id;
+          token.userType = "patient";
+        }
       }
       return token;
     },
