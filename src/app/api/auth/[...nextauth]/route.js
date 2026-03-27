@@ -21,6 +21,10 @@ export const authOptions = {
           label: "Password",
           type: "password",
         },
+        userType:{
+          label: "UserType",
+          type: "text",
+        }
       },
       async authorize(credentials, req) {
         const user = await prisma.user.findUnique({
@@ -28,6 +32,11 @@ export const authOptions = {
         });
         if (!user || !user.password) {
           throw new Error("Invalid email or password.");
+        }
+        if (credentials.userType && user.userType !== credentials.userType) {
+          throw new Error(
+            `Access Denied. You are registered as a ${user.userType}.`,
+          );
         }
         const isValidPassword = await bcrypt.compare(
           credentials.password,

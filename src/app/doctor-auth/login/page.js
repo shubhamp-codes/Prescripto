@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-const Login = () => {
+const DoctorLogin = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
@@ -22,7 +22,7 @@ const Login = () => {
     const result = await signIn("credentials", {
       email: email,
       password: password,
-      userType: "patient",
+      userType: "doctor",
       redirect: false,
     });
 
@@ -31,7 +31,7 @@ const Login = () => {
       setIsSubmitting(false);
       console.error("Login Failed:", result.error);
     } else {
-      router.push(`/dashboard/patient`);
+      router.push(`/dashboard/doctor`);
     }
   }
 
@@ -104,12 +104,12 @@ const Login = () => {
           <div className="flex-1 h-px bg-gray-200"></div>
         </div>
 
-        <GoogleSignInButton callbackUrl={"/dashboard/patient"} />
+        <GoogleSignInButton callbackUrl={"/dashboard/doctor"} />
 
         <p className="mt-8 text-center text-sm text-gray-600">
           Don't have an account?{" "}
           <Link
-            href="/signup"
+            href="/doctor-auth/signup"
             className="text-blue-600 font-medium hover:underline transition-all"
           >
             Create account
@@ -120,4 +120,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default DoctorLogin;
