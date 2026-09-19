@@ -100,6 +100,7 @@ model Doctor {
   speciality     Speciality             @relation(fields: [specialityId], references: [specialityId])
   appointments   Appointment[]
   unavailability DoctorUnavailability[]
+  schedules      DoctorSchedule[]
 
   @@map("doctors")
 }
@@ -163,3 +164,17 @@ model DoctorUnavailability {
 
   @@map("doctor_unavailabilities")
 }
+
+model DoctorSchedule {
+  scheduleId String @id @default(uuid()) @map("schedule_id")
+  doctorId   String @map("doctor_id")
+  dayOfWeek  Int   
+  startTime  String 
+  endTime    String 
+
+  doctor Doctor @relation(fields: [doctorId], references: [doctorId], onDelete: Cascade)
+
+  @@unique([doctorId, dayOfWeek]) 
+  @@map("doctor_schedules")
+}
+
