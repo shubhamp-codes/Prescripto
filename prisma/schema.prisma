@@ -24,10 +24,10 @@ model User {
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
-  doctor        Doctor?
-  patient       Patient?
-  accounts      Account[]
-  sessions      Session[]
+  doctor   Doctor?
+  patient  Patient?
+  accounts Account[]
+  sessions Session[]
 
   @@map("users")
 }
@@ -52,8 +52,8 @@ model Account {
   id_token          String?
   session_state     String?
 
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -65,9 +65,9 @@ model Session {
   sessionToken String   @unique @map("session_token")
   userId       String   @map("user_id")
   expires      DateTime
-  
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -87,6 +87,8 @@ model Doctor {
   doctorId      String   @id @map("doctor_id")
   specialityId  String   @map("speciality_id")
   qualification String?
+  experience    Int?
+  about         String?
   fee           Int
   state         String
   city          String
@@ -103,19 +105,21 @@ model Doctor {
 }
 
 model Speciality {
-  specialityId String   @id @default(uuid()) @map("speciality_id")
+  specialityId String @id @default(uuid()) @map("speciality_id")
   name         String @unique
-  
-  doctor       Doctor[]
+
+  doctor Doctor[]
 
   @@map("specialities")
 }
 
 model Patient {
-  patientId String   @id @map("patient_id")
-  dob       DateTime @db.Date
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  patientId  String   @id @map("patient_id")
+  dob        DateTime @db.Date
+  gender     String?
+  bloodGroup String?  @map("blood_group")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 
   user         User          @relation(fields: [patientId], references: [id], onDelete: Cascade)
   appointments Appointment[]
@@ -141,6 +145,8 @@ model Appointment {
 enum Status {
   pending
   confirmed
+  cancelled
+  completed
 
   @@map("appointment_statuses")
 }
