@@ -4,7 +4,7 @@ import GoogleSignInButton from "@/components/GoogleSignInButton";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-
+import { Stethoscope } from "lucide-react";
 const DoctorLogin = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,11 +38,17 @@ const DoctorLogin = () => {
   return (
     <div className="min-h-[calc(100vh-80px)] flex items-center justify-center bg-gray-50 px-4 py-12">
       <div className="bg-white w-full max-w-md p-8 rounded-2xl shadow-xl border border-gray-100">
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 flex flex-col items-center">
+          <div className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold tracking-wide flex items-center gap-1.5 mb-4 border border-blue-200">
+            <Stethoscope className="w-4 h-4" />
+            For Doctors
+          </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome Back
+            Welcome Back, Doctor
           </h2>
-          <p className="text-gray-500 text-sm">Please log in to your account</p>
+          <p className="text-gray-500 text-sm">
+            Log in to manage your appointments and patients.
+          </p>
         </div>
 
         <form className="flex flex-col gap-5" onSubmit={handleManualLogin}>
