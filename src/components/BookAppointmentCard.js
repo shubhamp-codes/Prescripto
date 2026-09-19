@@ -1,15 +1,19 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import groupProfileSrc from "@/assets/images/group_profiles.png";
-import doctorTeamSrc from "@/assets/images/doctors_team.png"
+import doctorTeamSrc from "@/assets/images/doctors_team.png";
 import Link from "next/link";
 const BookAppointmentCard = () => {
   return (
     <div className="w-[80vw] lg:min-h-[max(27vw,75vh)] h-auto bg-blue-600 flex items-center flex-col rounded-2xl text-white px-3 lg:px-10 lg:flex-row  relative overflow-hidden">
       <div className="flex items-center flex-col lg:items-start lg:w-1/2">
         <h1 className="flex flex-col text-3xl lg:text-5xl items-center font-bold lg:items-start">
-          <span className="py-3 text-center lg:text-left">Book Appointment</span>
-          <span className="pb-3 text-center lg:text-left">with Trusted Doctors</span>
+          <span className="py-3 text-center lg:text-left">
+            Book Appointment
+          </span>
+          <span className="pb-3 text-center lg:text-left">
+            with Trusted Doctors
+          </span>
         </h1>
         <div className="flex items-center flex-col lg:flex-row">
           <Image
