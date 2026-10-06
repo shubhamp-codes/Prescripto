@@ -1,6 +1,6 @@
 "use client";
 import { signIn } from "next-auth/react";
-import GoogleSignInButton from "@/components/GoogleSignInButton";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -104,13 +104,7 @@ const DoctorLogin = () => {
           </div>
         )}
 
-        <div className="flex items-center gap-4 my-8">
-          <div className="flex-1 h-px bg-gray-200"></div>
-          <span className="text-sm text-gray-400 font-medium">OR</span>
-          <div className="flex-1 h-px bg-gray-200"></div>
-        </div>
 
-        <GoogleSignInButton callbackUrl={"/dashboard/doctor"} />
 
         <p className="mt-8 text-center text-sm text-gray-600">
           Don't have an account?{" "}

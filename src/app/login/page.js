@@ -1,14 +1,26 @@
 "use client";
 import { signIn } from "next-auth/react";
 import GoogleSignInButton from "@/components/GoogleSignInButton";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { Suspense } from "react";
 
-const Login = () => {
+const LoginContent = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard/patient";
+  const error = searchParams.get("error");
+
+  useEffect(() => {
+    if (error === "OAuthAccountNotLinked") {
+      setErrorMessage("This email is already registered with a password. Please sign in with your credentials.");
+    } else if (error) {
+      setErrorMessage("An error occurred during authentication.");
+    }
+  }, [error]);
 
   async function handleManualLogin(e) {
     e.preventDefault();
@@ -31,7 +43,7 @@ const Login = () => {
       setIsSubmitting(false);
       console.error("Login Failed:", result.error);
     } else {
-      router.push(`/dashboard/patient`);
+      router.push(callbackUrl);
     }
   }
 
@@ -104,7 +116,7 @@ const Login = () => {
           <div className="flex-1 h-px bg-gray-200"></div>
         </div>
 
-        <GoogleSignInButton callbackUrl={"/dashboard/patient"} />
+        <GoogleSignInButton callbackUrl={callbackUrl} />
 
         <p className="mt-8 text-center text-sm text-gray-600">
           Don't have an account?{" "}
@@ -120,4 +132,10 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default function Login() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginContent />
+    </Suspense>
+  );
+}

@@ -59,6 +59,10 @@ export const authOptions = {
       allowDangerousEmailAccountLinking: true,
     }),
   ],
+  pages: {
+    signIn: '/login',
+    error: '/login', // Redirects here with ?error=OAuthAccountNotLinked
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {

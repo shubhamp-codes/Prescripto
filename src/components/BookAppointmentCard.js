@@ -27,7 +27,7 @@ const BookAppointmentCard = () => {
           </span>
         </div>
         <Link
-          href="/book-appointment"
+          href="/all-doctors"
           className=" bg-white text-gray-800 my-3 py-3 px-5 rounded-2xl flex gap-2 hover:-translate-y-1 duration-300 shadow-lg"
         >
           Book appointment <ArrowRight className="w-5 pt-0.5" />
