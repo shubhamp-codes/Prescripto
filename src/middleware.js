@@ -6,6 +6,11 @@ export default withAuth(
         const url = req.nextUrl.pathname;
         const token = req.nextauth.token;
 
+        // If a logged in doctor visits the home page, redirect them to their dashboard
+        if (url === "/" && token?.userType === "doctor") {
+            return NextResponse.redirect(new URL("/dashboard/doctor", req.url));
+        }
+
         if(!token){
             if(url.startsWith("/dashboard/admin")){
                 return NextResponse.redirect(new URL("/admin-login", req.url));
@@ -56,6 +61,7 @@ export default withAuth(
 
 export const config={
     matcher:[
+        `/`,
         `/dashboard/:path*`,
         `/book-appointment/:path*`
     ]

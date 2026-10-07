@@ -12,6 +12,7 @@ import {
   Stethoscope,
   CircleAlert,
   UserRound,
+  LayoutDashboard,
 } from "lucide-react";
 
 const Navbar = () => {
@@ -20,12 +21,26 @@ const Navbar = () => {
   const pathname = usePathname();
   const { data: session, status } = useSession();
 
-  const navigationLinks = [
-    { name: "HOME", src: "/", icon: House },
+  const baseLinks = [
     { name: "ALL DOCTORS", src: "/all-doctors", icon: Stethoscope },
     { name: "ABOUT", src: "/about", icon: CircleAlert },
     { name: "CONTACT", src: "/contact", icon: UserRound },
   ];
+
+  const navigationLinks = status === "authenticated" && session?.user
+    ? [
+        { name: "HOME", src: "/", icon: House },
+        {
+          name: "DASHBOARD",
+          src: session.user.userType === "doctor" ? "/dashboard/doctor" : "/dashboard/patient",
+          icon: LayoutDashboard,
+        },
+        ...baseLinks,
+      ]
+    : [
+        { name: "HOME", src: "/", icon: House },
+        ...baseLinks,
+      ];
 
   return (
     <>

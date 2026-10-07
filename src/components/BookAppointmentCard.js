@@ -3,7 +3,11 @@ import Image from "next/image";
 import groupProfileSrc from "@/assets/images/group_profiles.png";
 import doctorTeamSrc from "@/assets/images/doctors_team.png";
 import Link from "next/link";
-const BookAppointmentCard = () => {
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+
+const BookAppointmentCard = async () => {
+  const session = await getServerSession(authOptions);
   return (
     <div className="w-[80vw] lg:min-h-[max(27vw,75vh)] h-auto bg-blue-600 flex items-center flex-col rounded-2xl text-white px-3 lg:px-10 lg:flex-row  relative overflow-hidden">
       <div className="flex items-center flex-col lg:items-start lg:w-1/2">
@@ -26,12 +30,21 @@ const BookAppointmentCard = () => {
             schedule your appointment hassle-free.
           </span>
         </div>
-        <Link
-          href="/all-doctors"
-          className=" bg-white text-gray-800 my-3 py-3 px-5 rounded-2xl flex gap-2 hover:-translate-y-1 duration-300 shadow-lg"
-        >
-          Book appointment <ArrowRight className="w-5 pt-0.5" />
-        </Link>
+        {session?.user?.userType === "doctor" ? (
+          <Link
+            href="/dashboard/doctor"
+            className=" bg-white text-gray-800 my-3 py-3 px-5 rounded-2xl flex gap-2 hover:-translate-y-1 duration-300 shadow-lg"
+          >
+            Go to Dashboard <ArrowRight className="w-5 pt-0.5" />
+          </Link>
+        ) : (
+          <Link
+            href="/all-doctors"
+            className=" bg-white text-gray-800 my-3 py-3 px-5 rounded-2xl flex gap-2 hover:-translate-y-1 duration-300 shadow-lg"
+          >
+            Book appointment <ArrowRight className="w-5 pt-0.5" />
+          </Link>
+        )}
       </div>
       <Image
         src={doctorTeamSrc}
