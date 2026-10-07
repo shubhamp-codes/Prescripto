@@ -1,10 +1,11 @@
+import prisma from "@/lib/prisma";
+import DoctorSignupForm from "./DoctorSignupForm";
 
-const DoctorSignup = () => {
-  return (
-    <div>
-      
-    </div>
-  )
+export default async function DoctorSignupPage() {
+  // Fetch specialities to populate the dropdown
+  const specialities = await prisma.speciality.findMany({
+    orderBy: { name: "asc" },
+  });
+
+  return <DoctorSignupForm specialities={specialities} />;
 }
-
-export default DoctorSignup

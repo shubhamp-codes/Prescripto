@@ -35,6 +35,7 @@ export async function POST(req) {
         password: hashedPassword,
         name: user.name,
         phone: user.phone || null,
+        image: user.image || null,
       },
     });
     switch (user.userType) {
@@ -52,6 +53,8 @@ export async function POST(req) {
             doctorId: newUser.id,
             specialityId: validSpeciality.specialityId,
             qualification: user.qualification || null,
+            experience: user.experience ? parseInt(user.experience) : null,
+            about: user.about || null,
             fee: parseInt(user.fee),
             state: user.state,
             city: user.city,

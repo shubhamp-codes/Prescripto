@@ -1,14 +1,17 @@
 "use client";
 import { signIn } from "next-auth/react";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Stethoscope } from "lucide-react";
-const DoctorLogin = () => {
+
+const DoctorLoginContent = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isRegistered = searchParams.get("registered") === "true";
 
   async function handleManualLogin(e) {
     e.preventDefault();
@@ -50,6 +53,14 @@ const DoctorLogin = () => {
             Log in to manage your appointments and patients.
           </p>
         </div>
+
+        {isRegistered && (
+          <div className="mb-6 p-3 bg-green-50 border border-green-200 rounded-lg text-center">
+            <span className="text-green-700 text-sm font-medium">
+              Application submitted successfully! Please log in.
+            </span>
+          </div>
+        )}
 
         <form className="flex flex-col gap-5" onSubmit={handleManualLogin}>
           <div>
@@ -120,4 +131,10 @@ const DoctorLogin = () => {
   );
 };
 
-export default DoctorLogin;
+export default function DoctorLogin() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <DoctorLoginContent />
+    </Suspense>
+  );
+}
