@@ -73,9 +73,11 @@ export const authOptions = {
         if (dbUser) {
           token.id = dbUser.id;
           token.userType = dbUser.userType;
+          token.image = dbUser.image;
         } else {
           token.id = user.id;
           token.userType = "patient";
+          token.image = user.image;
         }
       }
       return token;
@@ -84,6 +86,7 @@ export const authOptions = {
       if (token) {
         session.user.id = token.id;
         session.user.userType = token.userType;
+        session.user.image = token.image;
       }
       return session;
     },
